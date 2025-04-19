@@ -5,7 +5,6 @@ import icon from '../../resources/icon.png?asset';
 import * as dotenv from 'dotenv';
 import path from 'path';
 import { openDatabaseConnection, closeDatabaseConnection } from './database/connection';
-import { createLlmClient } from './services/llm';
 
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
@@ -45,39 +44,37 @@ function createWindow(): void {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
 
+  try {
+    await openDatabaseConnection();
 
-  // openDatabaseConnection()
-  // .then(async () => {
+    // Default open or close DevTools by F12 in development
+    // and ignore CommandOrControl + R in production.
+    // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
+    app.on('browser-window-created', (_, window) => {
+      optimizer.watchWindowShortcuts(window)
+    })
 
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
-  })
-
-  // IPC test
-  ipcMain.on('ping', async () => {
-    console.log('pong')
-  });
+    // IPC test
+    ipcMain.on('ping', async () => {
+      console.log('pong')
+    });
 
 
-  createWindow()
+    createWindow()
 
-  app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-  // })
-  // .catch((error) => {
-  // console.error('Unable to establish database connection exiting app:', error);
-  // app.exit(1);
-  // });
+    app.on('activate', function () {
+      // On macOS it's common to re-create a window in the app when the
+      // dock icon is clicked and there are no other windows open.
+      if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    })
+  } catch (error) {
+    console.error('Error opening database:', error);
+    app.exit(1);
+  }
 
 });
 
