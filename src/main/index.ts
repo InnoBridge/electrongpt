@@ -5,6 +5,7 @@ import icon from '../../resources/icon.png?asset';
 import * as dotenv from 'dotenv';
 import path from 'path';
 import { openDatabaseConnection, closeDatabaseConnection } from './database/connection';
+import { createLlmClient } from './services/llm';
 
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
@@ -58,9 +59,11 @@ app.whenReady().then(async () => {
       optimizer.watchWindowShortcuts(window)
     })
 
+    createLlmClient();
+
     // IPC test
     ipcMain.on('ping', async () => {
-      console.log('pong')
+      console.log('pong');
     });
 
 

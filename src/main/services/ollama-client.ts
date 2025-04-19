@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { LlmProviders, LLM_CONFIGURATIONS } from "../configuration/llm-configurations";
 import { OllamaModels } from "../configuration/llm-models";
+import { LlmClient } from "./llm_client";
 
 class OllamaClient implements LlmClient {
     private client: OpenAI;
