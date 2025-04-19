@@ -64,8 +64,6 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on('ping', async () => {
     console.log('pong')
-    let response = await llmClient.createCompletion("Hello world");
-    console.log("llm response: ", response)
   });
 
 

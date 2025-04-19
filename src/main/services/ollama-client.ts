@@ -4,7 +4,7 @@ import { OllamaModels } from "../configuration/llm-models";
 
 class OllamaClient implements LlmClient {
     private client: OpenAI;
-    private model: string = OllamaModels.QWEN_2_5_CODEL_14B;
+    private model: string = OllamaModels.QWEN_2_5_CODER_14B;
 
     constructor() {
         this.client = new OpenAI(
