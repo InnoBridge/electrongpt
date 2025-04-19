@@ -59,7 +59,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-  const llmClient = createLlmClient();
 
   // IPC test
   ipcMain.on('ping', async () => {
