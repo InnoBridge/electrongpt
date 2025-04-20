@@ -2,7 +2,22 @@ import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
-const api = {}
+const api = {
+  llm: {
+    getModels: () => {
+      return electronAPI.ipcRenderer.invoke('llm:get-models')
+    },
+    getModel: () => {
+      return electronAPI.ipcRenderer.invoke('llm:get-model')
+    },
+    setModel: (model) => {
+      return electronAPI.ipcRenderer.invoke('llm:set-model', model)
+    },
+    createCompletion: (prompt) => {
+      return electronAPI.ipcRenderer.invoke('llm:create-completion', prompt)
+    }
+  }
+}
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

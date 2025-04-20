@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv';
 import path from 'path';
 import { openDatabaseConnection, closeDatabaseConnection } from './database/connection';
 import { createLlmClient } from './services/llm';
+import setupChatApis from './llm-apis';
 
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
@@ -111,3 +112,4 @@ app.on('will-quit', async (event) => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+setupChatApis(ipcMain);
