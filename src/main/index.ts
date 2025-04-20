@@ -5,7 +5,7 @@ import icon from '../../resources/icon.png?asset';
 import * as dotenv from 'dotenv';
 import path from 'path';
 import { openDatabaseConnection, closeDatabaseConnection } from './database/connection';
-import { createLlmClient, getModels, setModel, createCompletion } from './services/llm';
+import { createLlmClient } from './services/llm';
 
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
