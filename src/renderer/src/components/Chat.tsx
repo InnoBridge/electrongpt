@@ -11,35 +11,28 @@ const Chat: React.FC = () => {
 
     const sendMessage = async () => {
         if (message.trim()) {
-            setChat([...chat, { role: 'user', content: message }]);
+            setChat(chat => [...chat, { role: 'user', content: message }]);
             setMessage('');
             try {
                 const response = await window.api.llm.createCompletion(message);
-                setChat([...chat, { role: 'AI', content: response.content }]);
+                setChat(chat => [...chat, { role: 'AI', content: response.content }]);
             } catch (error) {
                 console.error('Error:', error);
             }
         }
     }
-
+    
     return (
         <div>
             <div>
                 {chat.map((msg, index) => (
-                    <div key={index} className={msg.role}>
-                        <strong>{msg.role}:</strong> {msg.content}
-                    </div>
+                    <p key={index}><strong>{msg.role}:</strong> {msg.content} </p>
                 ))}
             </div>
             <input
                 type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                        sendMessage();
-                    }
-                }}
             />
             <button onClick={sendMessage}>Send</button>
         </div>
