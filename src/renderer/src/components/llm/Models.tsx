@@ -1,5 +1,4 @@
 import React from 'react';
-import Model from './Model';
 
 interface ModelsProps {
     models: string[];
